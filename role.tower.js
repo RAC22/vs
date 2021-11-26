@@ -16,7 +16,8 @@ var roleTower = {
                        
             var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
             
-            if(closestHostile) {
+            if(closestHostile && !closestHostile.name.includes('hopper')) {
+                
                 console.log('HOSTILE DETECTED!')
                 tower.attack(closestHostile);
             }else{

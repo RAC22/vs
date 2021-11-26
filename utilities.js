@@ -1,19 +1,16 @@
 
 var utilities = {
-    findEnergy : function() {
-        var starterRoom = 'W18N16'
-        return Game.rooms[starterRoom].energyAvailable
-    },
 
-    workerPart : function(role){
-        var room = 'W18N16';
+    workerPart : function(role, room){
+        
         var energyAvail = Game.rooms[room].energyAvailable
         
         function defaultParts() {
             var numOfWorkerParts = Math.floor(energyAvail / 200)
             let arrayToReturn = []
-            for (let i = 0; i < numOfWorkerParts; i++){
-                var chunk = arrayToReturn.push(WORK,CARRY,MOVE)
+            for (let i = 0; i < (numOfWorkerParts); i++){
+                if (i === 5) { break; }
+                arrayToReturn.push(WORK,CARRY,MOVE)
             }
             return arrayToReturn;
         }
@@ -45,9 +42,12 @@ var utilities = {
             case 'claimer' :
                 var array = [CLAIM,MOVE,MOVE,MOVE]
                 return array 
+            case 'defender' :
+                var array = [ATTACK,MOVE]
+                return array
                 
             default :
-                console.log('HEY ROLE IS WRONG FOO')
+                console.log('HEY ROLE IS WRONG FOO ' + role)
         }        
     },
 
@@ -65,6 +65,10 @@ var utilities = {
                 spawn.memory.canNum = 1
             }else{spawn.memory.canNum = 0}
         }
+    },
+    // takes a creep object, and an instance of a RoomPosition object
+    sendToOtherRoom : function (creep, roomTo) {
+        creep.moveTo(roomTo)
     }
 }
 module.exports = utilities;
