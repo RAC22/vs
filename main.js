@@ -45,12 +45,12 @@ module.exports.loop = function () {
                 return (struct.structureType == STRUCTURE_CONTAINER)
             }
         });
-        if(cannisters.length >= 2){
+        if(cannisters.length >= 2 && roomObject.energyCapacityAvailable >= 800){
             roles.dumpHarvester.numOf = 2
             roles.runner.numOf = 3
             roles.harvester.numOf = 1 
         }
-        if (cannisters.length >= 3){
+        if (cannisters.length >= 3 && roomObject.energyCapacityAvailable >= 1000){
             roles.fatUpgrader.numOf = 1
             roles.upgrader.numOf = 0
         }

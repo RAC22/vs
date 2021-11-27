@@ -15,6 +15,7 @@ var roleHarvester = {
 	    if(!creep.memory.energized) {
             var sources = creep.room.find(FIND_SOURCES);
             if(creep.harvest(sources[creep.memory.sourceNum]) == ERR_NOT_IN_RANGE) {
+                creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD)
                 creep.moveTo(sources[creep.memory.sourceNum], {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }

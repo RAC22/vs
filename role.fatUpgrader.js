@@ -8,7 +8,7 @@ var roleFatUpgrader = {
             if (creep.pos.getRangeTo(Game.getObjectById(creep.memory.canId)) == 0){
                creep.upgradeController(creep.room.controller)
             }else{
-               
+                creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD)
                 creep.moveTo(Game.getObjectById(creep.memory.canId))
             }
             if (creep.upgradeController(creep.room.canId) === ERR_NOT_ENOUGH_RESOURCES){

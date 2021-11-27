@@ -9,7 +9,7 @@ var roleDumpHarvester = {
                 var source = creep.pos.findClosestByPath(FIND_SOURCES)
                 creep.harvest(source)
             }else{
-               
+                creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD)
                 creep.moveTo(Game.getObjectById(creep.memory.canId))
             }
 
