@@ -2,9 +2,6 @@ var roleRunner = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-    // make creep with lots of move/carry
-    // if no energy, target cannister and move to it and get some
-    // if energy, go give energy to what needs it. 
         
         if (creep.memory.Target && creep.store[RESOURCE_ENERGY] < 300){
             creep.say('🔄 Collect?');
@@ -38,11 +35,19 @@ var roleRunner = {
                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                     }                    
                 });
+
                 //medium piority
-                if (targets.length == 0 && Game.getObjectById('619a330aab7e4c0814fb415d').store[RESOURCE_ENERGY] < 1500){
-                    targets.push(Game.getObjectById('619a330aab7e4c0814fb415d'))
-                    
+                var upgradeContainer = creep.room.find(FIND_STRUCTURES, {
+                    filter: { structureType: STRUCTURE_CONTAINER }
+                })[2];
+                if(upgradeContainer){
+                    if(targets.length == 0 && upgradeContainer.store.getFreeCapacity(RESOURCE_ENERGY) > 500){
+                        if(creep.transfer(upgradeContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(upgradeContainer, {visualizePathStyle: {stroke: '#ffffff'}});
+                        }
+                    }         
                 }
+                       
                 //low priority
                 if (targets.length == 0){
                     
@@ -66,13 +71,17 @@ var roleRunner = {
                 var targets = creep.room.find(FIND_STRUCTURES, {
                     filter : (struct) => {
                         
-                        return (struct.structureType == STRUCTURE_CONTAINER
-                            && struct.store[RESOURCE_ENERGY] > 300
-                            
-                            )
+                        return (struct.structureType == STRUCTURE_CONTAINER)
                     }
                 });
-                
+                //remove the last container, which should be the upgrader container
+                if(targets.length == 3){
+                    targets.pop()
+                }
+                //sort to find the least empty container
+                targets.sort(function (a, b) {
+                    return a.store.getFreeCapacity() - b.store.getFreeCapacity();
+                });                
                 if(creep.withdraw(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }

@@ -26,7 +26,7 @@ var roleRepair = {
         creep.memory.Target = false
     }
     if (creep.memory.Target && !creepEmpty && creep.memory.repair){
-        console.log('Repair Target has ' + Game.getObjectById(creep.memory.Target).hits + ' hp')
+        //console.log('Repair Target has ' + Game.getObjectById(creep.memory.Target).hits + ' hp')
 		if(creep.repair(Game.getObjectById(creep.memory.Target)) == ERR_NOT_IN_RANGE) {
         creep.moveTo(Game.getObjectById(creep.memory.Target), {visualizePathStyle: {stroke: '#ffffff'}});
         }

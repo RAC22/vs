@@ -31,11 +31,12 @@ var utilities = {
                 var array = [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE]
                 return array
             case 'fatUpgrader' :
-                var array = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,CARRY,CARRY,CARRY]
+                if(energyAvail >= 1100){
+                    var array = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,CARRY,CARRY,CARRY]
+                }else{
+                    var array = [WORK,WORK,WORK,WORK,WORK,WORK,MOVE,CARRY,CARRY,CARRY]
+                }                
                 return array
-            case 'BLOBMAN' :
-                var array = [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL]
-                return  array
             case 'scavenger' : 
                 var array = [WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE]
                 return array
@@ -44,6 +45,9 @@ var utilities = {
                 return array 
             case 'defender' :
                 var array = [ATTACK,MOVE]
+                return array
+            case 'storageDisperser' :
+                var array = [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE]
                 return array
                 
             default :

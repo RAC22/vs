@@ -9,8 +9,7 @@ const roleTower = require('role.tower');
 const roleScavenger = require('role.scavenger');
 const roleClaimer = require('role.claimer');
 const roleDefender = require('role.defender');
-
-const roleBLOBMAN = require('role.BLOBMAN');
+const roleStorageDisperser = require('role.storageDisperser')
 
 const utilities = require('utilities');
 
@@ -26,17 +25,17 @@ module.exports.loop = function () {
         console.log("Start " + Game.time  + " room " + room )
 
         let roles = {
-            harvester :     {numOf:4},
-            upgrader :      {numOf:2},
+            harvester :     {numOf:3},
+            upgrader :      {numOf:1},
             builder :       {numOf:0},
             repair :        {numOf:1},
             dumpHarvester : {numOf:0},
             runner :        {numOf:0},
             fatUpgrader :   {numOf:0},
-            BLOBMAN :       {numOf:0},
             scavenger :     {numOf:0},
             claimer :       {numOf:0},
-            defender :      {numOf:0}
+            defender :      {numOf:0},
+            storageDisperser:{numOf:0}
         }
 
         //find stage of development, switch to dump harvesters and runners when cannisters are in place
@@ -50,7 +49,7 @@ module.exports.loop = function () {
             roles.runner.numOf = 3
             roles.harvester.numOf = 1 
         }
-        if (cannisters.length >= 3 && roomObject.energyCapacityAvailable >= 1000){
+        if (cannisters.length >= 3 && roomObject.energyCapacityAvailable >= 800){
             roles.fatUpgrader.numOf = 1
             roles.upgrader.numOf = 0
         }
@@ -69,12 +68,15 @@ module.exports.loop = function () {
         if(enemies.length > 0){
             roles.defender.numOf = (enemies.length * 2);
         }
+        //if a large storage container is being used, add a disperser
+        var storage = roomObject.find(FIND_STRUCTURES, {
+            filter : {structureType: STRUCTURE_STORAGE}
+        });
+        if(storage.length > 0){
+            roles.storageDisperser.numOf = 1
+        }
 
         
-
-
-
-
         console.log(roomObject.energyAvailable + ' Energy available to spawn, and '+roomObject.energyCapacityAvailable+' capacity')
 
         //Run towers
@@ -147,82 +149,80 @@ module.exports.loop = function () {
                 spawn.pos.y, 
                 {align: 'left', opacity: 0.8});
         }
-
-
-        
-        // role execution loop
-        for(var name in Game.creeps){
-
-            var donateToRoom = false
-            var creepTypeToDonate = 'builder'
-            var destination = new RoomPosition(25,25, 'W19N16')
-
-            var creep = Game.creeps[name];
-            var role = creep.memory.role
-            
-            if (donateToRoom && role == creepTypeToDonate && creep.pos.roomName != destination.roomName){
-                utilities.sendToOtherRoom(creep, destination)
-            }else{
-                switch (role){
-                    case 'harvester' :
-                        if((creep.room.energyCapacityAvailable === creep.room.energyAvailable) && (towerEnergy == towerEnergyCapacity)){
-                            roleUpgrader.run(creep)
-                        }else{
-                            roleHarvester.run(creep)
-                        }
-                        break;
-    
-                    case 'builder' : 
-                        roleBuilder.run(creep)
-                        break;
-    
-                    case 'repair' :
-                        roleRepair.run(creep)
-                        break;  
-    
-                    case 'upgrader' : 
-                        roleUpgrader.run(creep)
-                        break;
-    
-                    case 'dumpHarvester' :
-                        roleDumpHarvester.run(creep)
-                        break;
-    
-                    case 'runner' :
-                        roleRunner.run(creep)
-                        break;
-                        
-                    case 'fatUpgrader' :
-                        roleFatUpgrader.run(creep)
-                        break;
-    
-                    case 'BLOBMAN' :
-                        roleBLOBMAN.run(creep)
-                        break;
-                    
-                    case 'scavenger' : 
-                        roleScavenger.run(creep)
-                        break;
-                    
-                    case 'claimer' :
-                        roleClaimer.run(creep)
-                        break;
-    
-                    case 'defender' :
-                        roleDefender.run(creep)
-                        break;
-    
-                    default : 
-                        console.log('WRONG/NO ROLE TO EXECUTE! ' + creep )
-                }
-            }            
-        }
-        
         console.log("END " + Game.time + " room " + room )
         console.log('Cpu bucket = ' + Game.cpu.bucket)
         console.log()
         if(Game.cpu.bucket == 10000){
             Game.cpu.generatePixel()
         }
-    }
+    } // end spawning loop
+
+        
+    // role execution loop
+    for(var name in Game.creeps){
+
+        var donateToRoom = false
+        var creepTypeToDonate = 'builder'
+        var destination = new RoomPosition(25,25, 'W19N16')
+
+        var creep = Game.creeps[name];
+        var role = creep.memory.role
+        
+        if (donateToRoom && role == creepTypeToDonate && creep.pos.roomName != destination.roomName){
+            utilities.sendToOtherRoom(creep, destination)
+        }else{
+            switch (role){
+                case 'harvester' :
+                    if((creep.room.energyCapacityAvailable === creep.room.energyAvailable) && (towerEnergy == towerEnergyCapacity)){
+                        roleUpgrader.run(creep)
+                    }else{
+                        roleHarvester.run(creep)
+                    }
+                    break;
+
+                case 'builder' : 
+                    roleBuilder.run(creep)
+                    break;
+
+                case 'repair' :
+                    roleRepair.run(creep)
+                    break;  
+
+                case 'upgrader' : 
+                    roleUpgrader.run(creep)
+                    break;
+
+                case 'dumpHarvester' :
+                    roleDumpHarvester.run(creep)
+                    break;
+
+                case 'runner' :
+                    roleRunner.run(creep)
+                    break;
+                    
+                case 'fatUpgrader' :
+                    roleFatUpgrader.run(creep)
+                    break;
+
+                case 'scavenger' : 
+                    roleScavenger.run(creep)
+                    break;
+                
+                case 'claimer' :
+                    roleClaimer.run(creep)
+                    break;
+
+                case 'defender' :
+                    roleDefender.run(creep)
+                    break;
+                
+                case 'storageDisperser' :
+                    roleStorageDisperser.run(creep)
+                    break;
+
+                default : 
+                    console.log('WRONG/NO ROLE TO EXECUTE! ' + creep )
+            }
+        }            
+    }    
 }
