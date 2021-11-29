@@ -56,7 +56,8 @@ var roleBuilder = {
 					var cans = creep.room.find(FIND_STRUCTURES, {
 						filter : (struct) => {
 							return (struct.structureType == STRUCTURE_CONTAINER
-								&& struct.store[RESOURCE_ENERGY] > 500
+								|| struct.structureType == STRUCTURE_STORAGE
+								&& struct.store[RESOURCE_ENERGY] > creep.store.getUsedCapacity(RESOURCE_ENERGY)
 								)
 						}
 					});

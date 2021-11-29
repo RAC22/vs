@@ -6,7 +6,8 @@ var roleFatUpgrader = {
             
 
             if (creep.pos.getRangeTo(Game.getObjectById(creep.memory.canId)) == 0){
-               creep.upgradeController(creep.room.controller)
+                creep.withdraw(Game.getObjectById(creep.memory.canId), RESOURCE_ENERGY)
+                creep.upgradeController(creep.room.controller)
             }else{
                 creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD)
                 creep.moveTo(Game.getObjectById(creep.memory.canId))

@@ -4,10 +4,11 @@ var utilities = {
     workerPart : function(role, room){
         
         var energyAvail = Game.rooms[room].energyAvailable
+        var energyCapacity = Game.rooms[room].energyCapacityAvailable
         
         function defaultParts() {
             var numOfWorkerParts = Math.floor(energyAvail / 200)
-            let arrayToReturn = []
+            var arrayToReturn = []
             for (let i = 0; i < (numOfWorkerParts); i++){
                 if (i === 5) { break; }
                 arrayToReturn.push(WORK,CARRY,MOVE)
@@ -27,28 +28,40 @@ var utilities = {
             case 'dumpHarvester' :
                 var array = [WORK,WORK,WORK,WORK,WORK,MOVE]
                 return array
+
             case 'runner' :
                 var array = [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE]
                 return array
+
             case 'fatUpgrader' :
-                if(energyAvail >= 1100){
-                    var array = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,CARRY,CARRY,CARRY]
-                }else{
-                    var array = [WORK,WORK,WORK,WORK,WORK,WORK,MOVE,CARRY,CARRY,CARRY]
-                }                
-                return array
+                var upgraderParts = Math.floor((energyCapacity - 200) / 100)
+                var arrayToReturn = [MOVE,MOVE,CARRY,CARRY]
+                for (let i = 0; i < (upgraderParts); i++){
+                        if (i === 10) { break; }
+                        arrayToReturn.push(WORK)
+                    }
+                return arrayToReturn;
+                
             case 'scavenger' : 
                 var array = [WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE]
                 return array
+
             case 'claimer' :
                 var array = [CLAIM,MOVE,MOVE,MOVE]
                 return array 
+
             case 'defender' :
-                var array = [ATTACK,MOVE]
+                var array = [TOUGH,ATTACK,MOVE,MOVE]
                 return array
+
             case 'storageDisperser' :
-                var array = [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE]
-                return array
+                var disperserParts = Math.floor(energyCapacity / 100)
+                var arrayToReturn = []
+                for (let i = 0; i < (disperserParts); i++){
+                        if (i === 15) { break; }
+                        arrayToReturn.push(CARRY,MOVE)
+                    }
+                return arrayToReturn;
                 
             default :
                 console.log('HEY ROLE IS WRONG FOO ' + role)

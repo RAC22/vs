@@ -75,6 +75,9 @@ module.exports.loop = function () {
         if(storage.length > 0){
             roles.storageDisperser.numOf = 1
         }
+        // if(room == 'W19N16'){
+        //     roles.scavenger.numOf = 1
+        // }
 
         
         console.log(roomObject.energyAvailable + ' Energy available to spawn, and '+roomObject.energyCapacityAvailable+' capacity')

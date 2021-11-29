@@ -37,7 +37,7 @@ var roleStorageDisperser = {
                 var upgradeContainer = creep.room.find(FIND_STRUCTURES, {
                     filter: { structureType: STRUCTURE_CONTAINER }
                 })[2];
-                if(upgradeContainer.store.getFreeCapacity(RESOURCE_ENERGY) > 400){
+                if(upgradeContainer.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getUsedCapacity(RESOURCE_ENERGY)){
                     if(creep.transfer(upgradeContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(upgradeContainer, {visualizePathStyle: {stroke: '#ffffff'}});
                     }

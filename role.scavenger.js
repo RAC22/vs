@@ -13,7 +13,8 @@ var roleScavenger = {
 	    }
 
 	    if(!creep.memory.energized) {
-            roomToScavenge = new RoomPosition(18,20, 'W19N16')
+            //room and position next to source to scavenge
+            roomToScavenge = new RoomPosition(45,12, 'W19N15')
             if(creep.pos.x != roomToScavenge.x || creep.pos.y != roomToScavenge.y || creep.pos.roomName != roomToScavenge.roomName){
                 
                 creep.moveTo(roomToScavenge)
@@ -26,20 +27,20 @@ var roleScavenger = {
             
         }
         else {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
-            }
-
-            // var homeRoom = new RoomPosition(8,37, 'W18N16')
             
-            // if(creep.pos.roomName != homeRoom.roomName){
-            //     creep.moveTo(homeRoom)
-            // }else{
-            //     if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-            //         creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
-            //     }
+            // if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+            //     creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
             // }
+
+            var homeRoom = new RoomPosition(25,25, 'W19N16')
+            
+            if(creep.pos.roomName != homeRoom.roomName){
+                creep.moveTo(homeRoom)
+            }else{
+                if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            }
         }
 	}
 };
