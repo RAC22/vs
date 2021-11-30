@@ -9,7 +9,7 @@ const roleTower = require('role.tower');
 const roleScavenger = require('role.scavenger');
 const roleClaimer = require('role.claimer');
 const roleDefender = require('role.defender');
-const roleStorageDisperser = require('role.storageDisperser')
+const roleStorageDisperser = require('role.storageDisperser');
 
 const utilities = require('utilities');
 
@@ -72,9 +72,11 @@ module.exports.loop = function () {
         var storage = roomObject.find(FIND_STRUCTURES, {
             filter : {structureType: STRUCTURE_STORAGE}
         });
-        if(storage.length > 0){
+        
+        if(storage.length > 0 && storage[0].store.getUsedCapacity(RESOURCE_ENERGY) > 5000){
             roles.storageDisperser.numOf = 1
         }
+        
         // if(room == 'W19N16'){
         //     roles.scavenger.numOf = 1
         // }
